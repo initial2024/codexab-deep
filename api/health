@@ -1,0 +1,46 @@
+function setCors(res: any) {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  res.setHeader("Cache-Control", "no-store");
+}
+
+export default function handler(req: any, res: any) {
+  setCors(res);
+
+  if (req.method === "OPTIONS") {
+    return res.status(204).end();
+  }
+
+  if (req.method !== "GET") {
+    return res.status(405).json({
+      ok: false,
+      error: "Method Not Allowed",
+    });
+  }
+
+  return res.status(200).json({
+    ok: true,
+    service: "selfhost-deep-parse-backend",
+    projectType: "deep-parse-backend",
+    version: "selfhost-deep-v1",
+    runtime: "vercel-node",
+    time: new Date().toISOString(),
+
+    capabilities: {
+      health: true,
+      chatProxy: false,
+      parse: false,
+      renderParse: true,
+      modelCheck: false,
+    },
+
+    endpoints: {
+      health: "/api/health",
+      renderParse: "/api/render-parse",
+    },
+
+    warning:
+      "This backend only handles deep render parsing. AI proxy and normal parse should be handled by the base backend.",
+  });
+}
