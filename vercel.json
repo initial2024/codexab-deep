@@ -2,6 +2,10 @@
   "version": 2,
   "rewrites": [
     {
+      "source": "/api/render-parse",
+      "destination": "https://codexab-deep.vercel.app/api/render-parse"
+    },
+    {
       "source": "/API/:path*",
       "destination": "/api/:path*"
     }
