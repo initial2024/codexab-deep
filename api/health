@@ -1,11 +1,14 @@
-function setCors(res: any) {
+function setCors(res) {
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "GET,OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type,Authorization");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Content-Type,Authorization,X-Requested-With"
+  );
   res.setHeader("Cache-Control", "no-store");
 }
 
-export default function handler(req: any, res: any) {
+export default function handler(req, res) {
   setCors(res);
 
   if (req.method === "OPTIONS") {
@@ -15,13 +18,18 @@ export default function handler(req: any, res: any) {
   if (req.method !== "GET") {
     return res.status(405).json({
       ok: false,
+      success: false,
       error: "Method Not Allowed",
     });
   }
 
   return res.status(200).json({
     ok: true,
-    service: "selfhost-deep-parse-backend",
+    success: true,
+    status: "ok",
+    ready: true,
+
+    service: "codexab-deep-render-parse",
     projectType: "deep-parse-backend",
     version: "selfhost-deep-v1",
     runtime: "vercel-node",
@@ -38,9 +46,12 @@ export default function handler(req: any, res: any) {
     endpoints: {
       health: "/api/health",
       renderParse: "/api/render-parse",
+      chatProxy: null,
+      parse: null,
+      modelCheck: null,
     },
 
     warning:
-      "This backend only handles deep render parsing. AI proxy and normal parse should be handled by the base backend.",
+      "This backend only handles deep render parsing. AI proxy, normal parse and model checking should be handled by the base backend.",
   });
 }
