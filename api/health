@@ -41,6 +41,7 @@ export default function handler(req, res) {
       parse: false,
       renderParse: true,
       modelCheck: false,
+      fileParse: false
     },
 
     endpoints: {
@@ -49,6 +50,7 @@ export default function handler(req, res) {
       chatProxy: null,
       parse: null,
       modelCheck: null,
+      fileParse: null
     },
 
     warning:
